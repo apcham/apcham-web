@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Plant Species and Plant Hardiness Zones</title>
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
+
+<style>
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2,
+h3 {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+p {
+  font-size: 0.85em;
+  margin: 10px;
+  text-align: left;
+}
+
+/**
+* Create a position for the map
+* on the page */
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/**
+* Set rules for how the map overlays
+* (information box ) will be displayed
+* on the page. */
+.map-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  margin-right: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#features {
+  top: 0;
+  height: 150px;
+  margin-top: 20px;
+  width: 250px;
+};
+
+.mapboxgl-popup {
+max-width: 400px;
+font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+<div class='map-overlay' id='features'><h2>Plant Species within Plant Hardiness Zones</h2><div id='pd'><p>Hover over the flags to disover a plant species native to the area and the hardiness zone</p></div></div>
+<div class='map-overlay' id='legend'></div>
+
+<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYXBjaGFtIiwiYSI6ImNrNnB6cWZhOTB4czAzZm1sZDBvbnl5OGIifQ.mdf1UwyBh4mXpIyMTqHAXQ';
+var map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/apcham/ck7fdbbq42xej1jo281i9syui', //hosted style id
+center: [-113.388,40.588], // starting position
+zoom: 4// starting zoom
+
+});
+
+  map.on('mousemove', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['finallyrightph']
+});
+
+  if (!features.title) {
+    return;
+}
+var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+    .addTo(map);
+  });
+
+</script>
+
+</body>
+</html>
+
+]);
+
